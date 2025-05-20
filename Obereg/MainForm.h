@@ -1,6 +1,6 @@
 #pragma once
 #include "ViewClass.h"
-
+#include <windows.h>
 namespace Obereg {
 
 	using namespace System;
@@ -22,7 +22,10 @@ namespace Obereg {
 			InitializeComponent();
 
 			DrawTable(dataGridView);
-			DrawStartPosition(dataGridView);
+			
+			System::Windows::Forms::MessageBox();
+
+			DrawStartPosition(dataGridView, openFileDialog);
 			//
 			//TODO: добавьте код конструктора
 			//
@@ -70,6 +73,8 @@ namespace Obereg {
 	private: System::Windows::Forms::DataGridViewImageColumn^ Column7;
 	private: System::Windows::Forms::DataGridViewImageColumn^ Column8;
 	private: System::Windows::Forms::DataGridViewImageColumn^ Column9;
+	private: System::Windows::Forms::OpenFileDialog^ openFileDialog;
+
 
 
 
@@ -179,9 +184,18 @@ namespace Obereg {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle4 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MainForm::typeid));
 			this->dataGridView = (gcnew System::Windows::Forms::DataGridView());
+			this->Column1 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
+			this->Column2 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
+			this->Column3 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
+			this->Column4 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
+			this->Column5 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
+			this->Column6 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
+			this->Column7 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
+			this->Column8 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
+			this->Column9 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->button6 = (gcnew System::Windows::Forms::Button());
 			this->button5 = (gcnew System::Windows::Forms::Button());
@@ -193,15 +207,7 @@ namespace Obereg {
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->Column1 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
-			this->Column2 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
-			this->Column3 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
-			this->Column4 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
-			this->Column5 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
-			this->Column6 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
-			this->Column7 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
-			this->Column8 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
-			this->Column9 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
+			this->openFileDialog = (gcnew System::Windows::Forms::OpenFileDialog());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->BeginInit();
 			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
@@ -222,15 +228,15 @@ namespace Obereg {
 					this->Column2, this->Column3, this->Column4, this->Column5, this->Column6, this->Column7, this->Column8, this->Column9
 			});
 			this->dataGridView->Cursor = System::Windows::Forms::Cursors::Default;
-			dataGridViewCellStyle1->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
-			dataGridViewCellStyle1->BackColor = System::Drawing::SystemColors::Window;
-			dataGridViewCellStyle1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			dataGridViewCellStyle4->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle4->BackColor = System::Drawing::SystemColors::Window;
+			dataGridViewCellStyle4->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			dataGridViewCellStyle1->ForeColor = System::Drawing::SystemColors::ControlText;
-			dataGridViewCellStyle1->SelectionBackColor = System::Drawing::Color::PaleGoldenrod;
-			dataGridViewCellStyle1->SelectionForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			dataGridViewCellStyle1->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
-			this->dataGridView->DefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle4->ForeColor = System::Drawing::SystemColors::ControlText;
+			dataGridViewCellStyle4->SelectionBackColor = System::Drawing::Color::PaleGoldenrod;
+			dataGridViewCellStyle4->SelectionForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			dataGridViewCellStyle4->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
+			this->dataGridView->DefaultCellStyle = dataGridViewCellStyle4;
 			this->dataGridView->GridColor = System::Drawing::Color::DarkGray;
 			this->dataGridView->Location = System::Drawing::Point(10, 16);
 			this->dataGridView->MultiSelect = false;
@@ -241,6 +247,88 @@ namespace Obereg {
 			this->dataGridView->Size = System::Drawing::Size(275, 203);
 			this->dataGridView->TabIndex = 0;
 			this->dataGridView->SelectionChanged += gcnew System::EventHandler(this, &MainForm::dataGridView_SelectionChanged);
+			// 
+			// Column1
+			// 
+			this->Column1->HeaderText = L"";
+			this->Column1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Column1.Image")));
+			this->Column1->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
+			this->Column1->Name = L"Column1";
+			this->Column1->ReadOnly = true;
+			this->Column1->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->Column1->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// Column2
+			// 
+			this->Column2->HeaderText = L"";
+			this->Column2->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
+			this->Column2->Name = L"Column2";
+			this->Column2->ReadOnly = true;
+			this->Column2->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->Column2->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// Column3
+			// 
+			this->Column3->HeaderText = L"";
+			this->Column3->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
+			this->Column3->Name = L"Column3";
+			this->Column3->ReadOnly = true;
+			this->Column3->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->Column3->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// Column4
+			// 
+			this->Column4->HeaderText = L"";
+			this->Column4->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
+			this->Column4->Name = L"Column4";
+			this->Column4->ReadOnly = true;
+			this->Column4->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->Column4->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// Column5
+			// 
+			this->Column5->HeaderText = L"";
+			this->Column5->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
+			this->Column5->Name = L"Column5";
+			this->Column5->ReadOnly = true;
+			this->Column5->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->Column5->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// Column6
+			// 
+			this->Column6->HeaderText = L"";
+			this->Column6->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
+			this->Column6->Name = L"Column6";
+			this->Column6->ReadOnly = true;
+			this->Column6->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->Column6->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// Column7
+			// 
+			this->Column7->HeaderText = L"";
+			this->Column7->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
+			this->Column7->Name = L"Column7";
+			this->Column7->ReadOnly = true;
+			this->Column7->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->Column7->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// Column8
+			// 
+			this->Column8->HeaderText = L"";
+			this->Column8->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
+			this->Column8->Name = L"Column8";
+			this->Column8->ReadOnly = true;
+			this->Column8->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->Column8->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			// 
+			// Column9
+			// 
+			this->Column9->HeaderText = L"";
+			this->Column9->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
+			this->Column9->Name = L"Column9";
+			this->Column9->ReadOnly = true;
+			this->Column9->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+			this->Column9->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
 			// 
 			// groupBox1
 			// 
@@ -374,87 +462,10 @@ namespace Obereg {
 			this->label1->TabIndex = 0;
 			this->label1->Text = L"Князь";
 			// 
-			// Column1
+			// openFileDialog
 			// 
-			this->Column1->HeaderText = L"";
-			this->Column1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Column1.Image")));
-			this->Column1->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
-			this->Column1->Name = L"Column1";
-			this->Column1->ReadOnly = true;
-			this->Column1->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-			this->Column1->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
-			// 
-			// Column2
-			// 
-			this->Column2->HeaderText = L"";
-			this->Column2->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
-			this->Column2->Name = L"Column2";
-			this->Column2->ReadOnly = true;
-			this->Column2->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-			this->Column2->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
-			// 
-			// Column3
-			// 
-			this->Column3->HeaderText = L"";
-			this->Column3->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
-			this->Column3->Name = L"Column3";
-			this->Column3->ReadOnly = true;
-			this->Column3->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-			this->Column3->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
-			// 
-			// Column4
-			// 
-			this->Column4->HeaderText = L"";
-			this->Column4->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
-			this->Column4->Name = L"Column4";
-			this->Column4->ReadOnly = true;
-			this->Column4->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-			this->Column4->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
-			// 
-			// Column5
-			// 
-			this->Column5->HeaderText = L"";
-			this->Column5->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
-			this->Column5->Name = L"Column5";
-			this->Column5->ReadOnly = true;
-			this->Column5->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-			this->Column5->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
-			// 
-			// Column6
-			// 
-			this->Column6->HeaderText = L"";
-			this->Column6->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
-			this->Column6->Name = L"Column6";
-			this->Column6->ReadOnly = true;
-			this->Column6->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-			this->Column6->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
-			// 
-			// Column7
-			// 
-			this->Column7->HeaderText = L"";
-			this->Column7->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
-			this->Column7->Name = L"Column7";
-			this->Column7->ReadOnly = true;
-			this->Column7->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-			this->Column7->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
-			// 
-			// Column8
-			// 
-			this->Column8->HeaderText = L"";
-			this->Column8->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
-			this->Column8->Name = L"Column8";
-			this->Column8->ReadOnly = true;
-			this->Column8->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-			this->Column8->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
-			// 
-			// Column9
-			// 
-			this->Column9->HeaderText = L"";
-			this->Column9->ImageLayout = System::Windows::Forms::DataGridViewImageCellLayout::Zoom;
-			this->Column9->Name = L"Column9";
-			this->Column9->ReadOnly = true;
-			this->Column9->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-			this->Column9->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::Automatic;
+			this->openFileDialog->FileName = L"openFileDialog";
+			this->openFileDialog->Filter = L"(*.png)|*.png";
 			// 
 			// MainForm
 			// 

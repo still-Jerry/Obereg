@@ -1,0 +1,3 @@
+C:\Users\admin\Desktop\Политех\Алгоритмы и структура данных\Курсач\Obereg\Obereg\x64\Debug\Obereg.vcxproj.AssemblyReference.cache
+C:\Users\admin\Desktop\Политех\Алгоритмы и структура данных\Курсач\Obereg\Obereg\x64\Debug\Obereg.MainForm.resources
+C:\Users\admin\Desktop\Политех\Алгоритмы и структура данных\Курсач\Obereg\Obereg\x64\Debug\Obereg.vcxproj.GenerateResource.cache

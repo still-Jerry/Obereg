@@ -1,4 +1,3 @@
 ﻿  MainForm.cpp
-C:\Users\admin\Desktop\Политех\Алгоритмы и структура данных\Курсач\Obereg\Obereg\MainForm.h(26,38): error C2512: System::Windows::Forms::MessageBox: нет подходящего конструктора по умолчанию
-  (компиляция исходного файла "MainForm.cpp")
-  
+  MainForm.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
+  Obereg.vcxproj -> C:\Users\admin\Desktop\Политех\Алгоритмы и структура данных\Курсач\Obereg\x64\Debug\Obereg.exe

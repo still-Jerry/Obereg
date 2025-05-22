@@ -1,31 +1,72 @@
 #pragma once
 #include "ViewClass.h"
 #include <windows.h>
-namespace Obereg {
 
+//public ref class Globals
+//{
+//public:
+//	static String^ path = gcnew String("");
+//}
+namespace Obereg {
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
 	using namespace ViewClass;
+
+
+	int positionMass[9][9] = {  {0,0,0,1,1,1,0,0,0},
+								{0,0,0,0,1,0,0,0,0},
+								{0,0,0,0,2,0,0,0,0},
+								{1,0,0,0,2,0,0,0,1},
+								{1,1,2,2,3,2,2,1,1},
+								{1,0,0,0,2,0,0,0,1},
+								{0,0,0,0,2,0,0,0,0},
+								{0,0,0,0,1,0,0,0,0},
+								{0,0,0,1,1,1,0,0,0} };
+	int rowIndexCur=0, columnIndexCur=0;
+	boolean  isNapad = false;
 	/// <summary>
 	/// Сводка для MainForm
 	/// </summary>
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
+		
+	public:
+		
+		//static	  String^ path = "";
+			static String^ pathEmpty;
+			static String^ pathKnaz;
+			static String ^ pathZach;
+	private: System::Windows::Forms::Label^ label6;
+	public:
+	private: System::Windows::Forms::Label^ StepLable;
+		   static String^ pathNApad;/// объявление строковой переменной*/
+			
+		
 	public:
 		MainForm(void)
 		{
-			InitializeComponent();
 
+			
+			InitializeComponent();
+			ChangePicture(openFileDialog);
+
+			Bitmap^ bmp = gcnew Bitmap(pathEmpty);
+			for (int i = 0; i < 9; i++) {
+				dataGridView->Rows->Add();
+				for (int j = 0; j < 9; j++) {
+					dataGridView->Rows[i]->Cells[j]->Value = bmp;
+				}
+			}
 			DrawTable(dataGridView);
 			
-			System::Windows::Forms::MessageBox();
+			//System::Windows::Forms::MessageBox();
 
-			DrawStartPosition(dataGridView, openFileDialog);
+			DrawStartPosition(dataGridView,  pathEmpty, pathKnaz, pathZach, pathNApad, positionMass);
+
 			//
 			//TODO: добавьте код конструктора
 			//
@@ -34,6 +75,26 @@ namespace Obereg {
 				//Color.FromRgb(2, 245, 235);
 		}
 
+
+		void ChangePicture(OpenFileDialog^ openFileDialog) {
+
+			openFileDialog->ShowDialog();//открываем диалоговое окно
+			pathEmpty = openFileDialog->FileName;//используем переменную для хранения имени выбранного файла
+
+			openFileDialog->ShowDialog();//открываем диалоговое окно
+			pathKnaz = openFileDialog->FileName;//используем переменную для хранения имени выбранного файла
+			KnazButton->BackgroundImage = gcnew Bitmap(pathKnaz);
+
+			openFileDialog->ShowDialog();//открываем диалоговое окно
+			pathZach = openFileDialog->FileName;//используем переменную для хранения имени выбранного файла
+			ZaсhButton->BackgroundImage = gcnew Bitmap(pathZach);
+
+			openFileDialog->ShowDialog();//открываем диалоговое окно
+			pathNApad = openFileDialog->FileName;//используем переменную для хранения имени выбранного файла
+			NapadButton->BackgroundImage = gcnew Bitmap(pathNApad);
+
+
+		}
 
 	protected:
 		/// <summary>
@@ -59,9 +120,12 @@ namespace Obereg {
 	private: System::Windows::Forms::Label^ label2;
 
 	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::Button^ button6;
-	private: System::Windows::Forms::Button^ button5;
-	private: System::Windows::Forms::Button^ button4;
+	private: System::Windows::Forms::Button^ KnazButton;
+	private: System::Windows::Forms::Button^ ZaсhButton;
+	private: System::Windows::Forms::Button^ NapadButton;
+
+
+
 	private: System::Windows::Forms::Button^ button3;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::DataGridViewImageColumn^ Column1;
@@ -76,99 +140,12 @@ namespace Obereg {
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialog;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	private: System::ComponentModel::IContainer^ components;
 
 
-
-
-
-
-
-
-
 	protected:
 
-
-
-
-
-
-
-
-
-
 	protected:
-
-
-
-
-
-
-
-
 
 
 	private:
@@ -184,7 +161,7 @@ namespace Obereg {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle4 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MainForm::typeid));
 			this->dataGridView = (gcnew System::Windows::Forms::DataGridView());
 			this->Column1 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
@@ -197,9 +174,9 @@ namespace Obereg {
 			this->Column8 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
 			this->Column9 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->button6 = (gcnew System::Windows::Forms::Button());
-			this->button5 = (gcnew System::Windows::Forms::Button());
-			this->button4 = (gcnew System::Windows::Forms::Button());
+			this->KnazButton = (gcnew System::Windows::Forms::Button());
+			this->ZaсhButton = (gcnew System::Windows::Forms::Button());
+			this->NapadButton = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->label5 = (gcnew System::Windows::Forms::Label());
@@ -208,6 +185,8 @@ namespace Obereg {
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->openFileDialog = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->StepLable = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView))->BeginInit();
 			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
@@ -227,26 +206,26 @@ namespace Obereg {
 				this->Column1,
 					this->Column2, this->Column3, this->Column4, this->Column5, this->Column6, this->Column7, this->Column8, this->Column9
 			});
-			this->dataGridView->Cursor = System::Windows::Forms::Cursors::Default;
-			dataGridViewCellStyle4->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
-			dataGridViewCellStyle4->BackColor = System::Drawing::SystemColors::Window;
-			dataGridViewCellStyle4->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->dataGridView->Cursor = System::Windows::Forms::Cursors::Hand;
+			dataGridViewCellStyle1->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle1->BackColor = System::Drawing::SystemColors::Window;
+			dataGridViewCellStyle1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			dataGridViewCellStyle4->ForeColor = System::Drawing::SystemColors::ControlText;
-			dataGridViewCellStyle4->SelectionBackColor = System::Drawing::Color::PaleGoldenrod;
-			dataGridViewCellStyle4->SelectionForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			dataGridViewCellStyle4->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
-			this->dataGridView->DefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle1->ForeColor = System::Drawing::SystemColors::ControlText;
+			dataGridViewCellStyle1->SelectionBackColor = System::Drawing::Color::Beige;
+			dataGridViewCellStyle1->SelectionForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			dataGridViewCellStyle1->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
+			this->dataGridView->DefaultCellStyle = dataGridViewCellStyle1;
 			this->dataGridView->GridColor = System::Drawing::Color::DarkGray;
-			this->dataGridView->Location = System::Drawing::Point(10, 16);
-			this->dataGridView->MultiSelect = false;
+			this->dataGridView->Location = System::Drawing::Point(10, 24);
 			this->dataGridView->Name = L"dataGridView";
 			this->dataGridView->ReadOnly = true;
 			this->dataGridView->RowHeadersVisible = false;
 			this->dataGridView->SelectionMode = System::Windows::Forms::DataGridViewSelectionMode::CellSelect;
 			this->dataGridView->Size = System::Drawing::Size(275, 203);
 			this->dataGridView->TabIndex = 0;
-			this->dataGridView->SelectionChanged += gcnew System::EventHandler(this, &MainForm::dataGridView_SelectionChanged);
+			this->dataGridView->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MainForm::dataGridView_CellClick);
+			this->dataGridView->CellDoubleClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &MainForm::dataGridView_CellDoubleClick);
 			// 
 			// Column1
 			// 
@@ -332,9 +311,9 @@ namespace Obereg {
 			// 
 			// groupBox1
 			// 
-			this->groupBox1->Controls->Add(this->button6);
-			this->groupBox1->Controls->Add(this->button5);
-			this->groupBox1->Controls->Add(this->button4);
+			this->groupBox1->Controls->Add(this->KnazButton);
+			this->groupBox1->Controls->Add(this->ZaсhButton);
+			this->groupBox1->Controls->Add(this->NapadButton);
 			this->groupBox1->Controls->Add(this->button3);
 			this->groupBox1->Controls->Add(this->button1);
 			this->groupBox1->Controls->Add(this->label5);
@@ -351,45 +330,44 @@ namespace Obereg {
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Условные обозначения";
 			// 
-			// button6
+			// KnazButton
 			// 
-			this->button6->BackColor = System::Drawing::Color::Transparent;
-			this->button6->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button6.BackgroundImage")));
-			this->button6->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->button6->FlatAppearance->BorderSize = 0;
-			this->button6->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button6->Location = System::Drawing::Point(6, 40);
-			this->button6->Name = L"button6";
-			this->button6->Size = System::Drawing::Size(38, 29);
-			this->button6->TabIndex = 9;
-			this->button6->UseVisualStyleBackColor = false;
+			this->KnazButton->BackColor = System::Drawing::Color::Transparent;
+			this->KnazButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"KnazButton.BackgroundImage")));
+			this->KnazButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->KnazButton->FlatAppearance->BorderSize = 0;
+			this->KnazButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->KnazButton->Location = System::Drawing::Point(6, 40);
+			this->KnazButton->Name = L"KnazButton";
+			this->KnazButton->Size = System::Drawing::Size(38, 29);
+			this->KnazButton->TabIndex = 9;
+			this->KnazButton->UseVisualStyleBackColor = false;
 			// 
-			// button5
+			// ZaсhButton
 			// 
-			this->button5->BackColor = System::Drawing::Color::Transparent;
-			this->button5->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button5.BackgroundImage")));
-			this->button5->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->button5->FlatAppearance->BorderSize = 0;
-			this->button5->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button5->Location = System::Drawing::Point(6, 74);
-			this->button5->Name = L"button5";
-			this->button5->Size = System::Drawing::Size(38, 29);
-			this->button5->TabIndex = 8;
-			this->button5->UseVisualStyleBackColor = false;
+			this->ZaсhButton->BackColor = System::Drawing::Color::Transparent;
+			this->ZaсhButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"ZaсhButton.BackgroundImage")));
+			this->ZaсhButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->ZaсhButton->FlatAppearance->BorderSize = 0;
+			this->ZaсhButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->ZaсhButton->Location = System::Drawing::Point(6, 74);
+			this->ZaсhButton->Name = L"ZaсhButton";
+			this->ZaсhButton->Size = System::Drawing::Size(38, 29);
+			this->ZaсhButton->TabIndex = 8;
+			this->ZaсhButton->UseVisualStyleBackColor = false;
 			// 
-			// button4
+			// NapadButton
 			// 
-			this->button4->BackColor = System::Drawing::Color::Transparent;
-			this->button4->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button4.BackgroundImage")));
-			this->button4->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->button4->FlatAppearance->BorderSize = 0;
-			this->button4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button4->Location = System::Drawing::Point(6, 107);
-			this->button4->Name = L"button4";
-			this->button4->Size = System::Drawing::Size(38, 29);
-			this->button4->TabIndex = 7;
-			this->button4->Text = L"button4";
-			this->button4->UseVisualStyleBackColor = false;
+			this->NapadButton->BackColor = System::Drawing::Color::Transparent;
+			this->NapadButton->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"NapadButton.BackgroundImage")));
+			this->NapadButton->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->NapadButton->FlatAppearance->BorderSize = 0;
+			this->NapadButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->NapadButton->Location = System::Drawing::Point(6, 107);
+			this->NapadButton->Name = L"NapadButton";
+			this->NapadButton->Size = System::Drawing::Size(38, 29);
+			this->NapadButton->TabIndex = 7;
+			this->NapadButton->UseVisualStyleBackColor = false;
 			// 
 			// button3
 			// 
@@ -467,6 +445,28 @@ namespace Obereg {
 			this->openFileDialog->FileName = L"openFileDialog";
 			this->openFileDialog->Filter = L"(*.png)|*.png";
 			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Font = (gcnew System::Drawing::Font(L"Gadugi", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label6->Location = System::Drawing::Point(12, 5);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(34, 16);
+			this->label6->TabIndex = 2;
+			this->label6->Text = L"Ход:";
+			// 
+			// StepLable
+			// 
+			this->StepLable->AutoSize = true;
+			this->StepLable->Font = (gcnew System::Drawing::Font(L"Gadugi", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->StepLable->Location = System::Drawing::Point(46, 5);
+			this->StepLable->Name = L"StepLable";
+			this->StepLable->Size = System::Drawing::Size(92, 16);
+			this->StepLable->TabIndex = 3;
+			this->StepLable->Text = L"защищающий";
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -474,6 +474,8 @@ namespace Obereg {
 			this->BackColor = System::Drawing::SystemColors::ButtonFace;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->ClientSize = System::Drawing::Size(448, 231);
+			this->Controls->Add(this->StepLable);
+			this->Controls->Add(this->label6);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->dataGridView);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedToolWindow;
@@ -484,15 +486,144 @@ namespace Obereg {
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
 
 
-	private: System::Void dataGridView_SelectionChanged(System::Object^ sender, System::EventArgs^ e) {
-		//dataGridView->CurrentCell->AdjustCellBorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+
+private: System::Void dataGridView_CellClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+	int rowIndexCurN = dataGridView->CurrentCell->RowIndex; 
+	int columnIndexCurN = dataGridView->CurrentCell->ColumnIndex;
+	if (rowIndexCurN == rowIndexCur && columnIndexCurN == columnIndexCur) {
+	}else if (dataGridView->Rows[rowIndexCurN]->Cells[columnIndexCurN]->Style->BackColor == System::Drawing::Color::PaleGoldenrod) {
+		int igr = positionMass[rowIndexCur][columnIndexCur];
+		positionMass[rowIndexCurN][columnIndexCurN] = igr;
+		positionMass[rowIndexCur][columnIndexCur] = 0;
+		DrawTable(dataGridView);
+		DrawStartPosition(dataGridView, pathEmpty, pathKnaz, pathZach, pathNApad, positionMass);
+		if (isNapad) {
+			isNapad = false;
+			StepLable->Text = "защищающий";
+
+		}
+		else {
+			isNapad = true;
+			StepLable->Text = "нападающий";
+
+
+		}
 
 	}
+
+}
+private: System::Void dataGridView_CellDoubleClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+	//System::Windows::Forms::DataGridView^ Obereg::MainForm::
+	DrawTable(dataGridView);
+	 rowIndexCur = dataGridView->CurrentCell->RowIndex; // Получаем индекс строки
+	 columnIndexCur = dataGridView->CurrentCell->ColumnIndex;
+	 boolean checkStep = false;
+	 if (isNapad && positionMass[rowIndexCur][columnIndexCur] == 1) {
+		 checkStep = true;
+	 }
+	 else if (!isNapad && positionMass[rowIndexCur][columnIndexCur] != 1) {
+		 checkStep = true;
+
+	 }else checkStep = false;
+
+	if (positionMass[rowIndexCur][columnIndexCur]==0) {
+	}
+	else if (checkStep) {
+		
+		dataGridView->Rows[rowIndexCur]->Cells[columnIndexCur]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
+
+		boolean isZakrachV = true;
+		boolean isZakrachN = true;
+		boolean isZakrachP = true;
+		boolean isZakrachL = true;
+
+		int k = 9;
+		if (positionMass[rowIndexCur][columnIndexCur] == 3) {
+			k = 3;
+		}
+		for (int i = 1; i < k; i++)
+		{
+			if (rowIndexCur + i < 9) {
+				if (positionMass[rowIndexCur + i][columnIndexCur] == 0 && isZakrachV) {
+					dataGridView->Rows[rowIndexCur + i]->Cells[columnIndexCur]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
+
+				}
+				else {
+					isZakrachV = false;
+				}
+			}
+			if (0 <= rowIndexCur - i){
+				if (positionMass[rowIndexCur - i][columnIndexCur] == 0 && isZakrachN) {
+					dataGridView->Rows[rowIndexCur - i]->Cells[columnIndexCur]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
+
+				}
+				else {
+					isZakrachN = false;
+				}
+			} 
+			if (columnIndexCur + i < 9) {
+				if (positionMass[rowIndexCur][columnIndexCur + i] == 0 && isZakrachP) {
+					dataGridView->Rows[rowIndexCur]->Cells[columnIndexCur + i]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
+
+				}
+				else {
+					isZakrachP = false;
+				}
+			}
+			if(0 <= columnIndexCur - i){
+				if (positionMass[rowIndexCur][columnIndexCur - i] == 0 && isZakrachL) {
+					dataGridView->Rows[rowIndexCur]->Cells[columnIndexCur - i]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
+
+				}
+				else {
+					isZakrachL = false;
+				}
+			}
+		}
+		if (positionMass[rowIndexCur][columnIndexCur] != 3) {
+			dataGridView->Rows[0]->Cells[8]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
+			dataGridView->Rows[0]->Cells[0]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
+			dataGridView->Rows[8]->Cells[8]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
+			dataGridView->Rows[8]->Cells[0]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
+			dataGridView->Rows[4]->Cells[4]->Style->BackColor = System::Drawing::Color::Crimson;
+		}
+	/*	for (int i = 0; i<  9; i++)
+		{
+
+			if (positionMass[rowIndexCur][columnIndexCur] == 3 ) {
+				if (positionMass[rowIndexCur][i] == 0 && (columnIndexCur +2>= i &&  i >= columnIndexCur - 2 )) {
+					dataGridView->Rows[rowIndexCur]->Cells[i]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
+					
+				}
+				if (positionMass[i][columnIndexCur] == 0 && (rowIndexCur + 2 >= i && i >= rowIndexCur - 2 )) {
+					dataGridView->Rows[i]->Cells[columnIndexCur]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
+				}
+			}
+			else {
+				if (positionMass[rowIndexCur][i] == 0) {
+					dataGridView->Rows[rowIndexCur]->Cells[i]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
+				}
+				if (positionMass[i][columnIndexCur] == 0) {
+					dataGridView->Rows[i]->Cells[columnIndexCur]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
+				}
+				dataGridView->Rows[0]->Cells[8]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
+				dataGridView->Rows[0]->Cells[0]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
+				dataGridView->Rows[8]->Cells[8]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
+				dataGridView->Rows[8]->Cells[0]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
+				dataGridView->Rows[4]->Cells[4]->Style->BackColor = System::Drawing::Color::Crimson;
+			}*/
+			//либо
+			//dgv[i, rowIndex].Selected = true;
+		//}
+
+	}
+}
 }
 	;};
 

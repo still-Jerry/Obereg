@@ -17,3 +17,9 @@ Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c5619
 Class Obereg.MainForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    System.String pathEmpty : Public, Static
+    System.String pathKnaz : Public, Static
+    System.String pathZach : Public, Static
+  Methods:
+    ChangePicture(OpenFileDialog): PrivateScope, Public, HideBySig

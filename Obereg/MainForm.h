@@ -16,7 +16,7 @@ namespace Obereg {
 	using namespace System::Drawing;
 	using namespace ViewClass;
 
-
+	//текущее положение игрков
 	int positionMass[9][9] = {  {0,0,0,1,1,1,0,0,0},
 								{0,0,0,0,1,0,0,0,0},
 								{0,0,0,0,2,0,0,0,0},
@@ -27,6 +27,7 @@ namespace Obereg {
 								{0,0,0,0,1,0,0,0,0},
 								{0,0,0,1,1,1,0,0,0} };
 	int rowIndexCur=0, columnIndexCur=0;
+	//кто сейчас ходит
 	boolean  isNapad = false;
 	/// <summary>
 	/// Сводка для MainForm
@@ -36,7 +37,8 @@ namespace Obereg {
 		
 	public:
 		
-		//static	  String^ path = "";
+		//переменные хранения картинок фишек
+
 			static String^ pathEmpty;
 			static String^ pathKnaz;
 			static String ^ pathZach;
@@ -54,6 +56,7 @@ namespace Obereg {
 			InitializeComponent();
 			ChangePicture(openFileDialog);
 
+			//отрисовываем игровое поле 
 			Bitmap^ bmp = gcnew Bitmap(pathEmpty);
 			for (int i = 0; i < 9; i++) {
 				dataGridView->Rows->Add();
@@ -64,18 +67,12 @@ namespace Obereg {
 			DrawTable(dataGridView);
 			
 			//System::Windows::Forms::MessageBox();
-
+			 //отрисовываем стартовую позицию
 			DrawStartPosition(dataGridView,  pathEmpty, pathKnaz, pathZach, pathNApad, positionMass);
 
-			//
-			//TODO: добавьте код конструктора
-			//
-			
-			
-				//Color.FromRgb(2, 245, 235);
 		}
 
-
+		//загружаем картинки фишек
 		void ChangePicture(OpenFileDialog^ openFileDialog) {
 
 			openFileDialog->ShowDialog();//открываем диалоговое окно
@@ -492,17 +489,21 @@ namespace Obereg {
 #pragma endregion
 
 
-
+		//Ход игрока на доступные ячейки 
 private: System::Void dataGridView_CellClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
 	int rowIndexCurN = dataGridView->CurrentCell->RowIndex; 
 	int columnIndexCurN = dataGridView->CurrentCell->ColumnIndex;
+	//проверями что выбрана новая ячейка
 	if (rowIndexCurN == rowIndexCur && columnIndexCurN == columnIndexCur) {
 	}else if (dataGridView->Rows[rowIndexCurN]->Cells[columnIndexCurN]->Style->BackColor == System::Drawing::Color::PaleGoldenrod) {
-		int igr = positionMass[rowIndexCur][columnIndexCur];
-		positionMass[rowIndexCurN][columnIndexCurN] = igr;
+		int igr = positionMass[rowIndexCur][columnIndexCur]; // текущая позиция
+		positionMass[rowIndexCurN][columnIndexCurN] = igr;//новыя позиция куда идти 
 		positionMass[rowIndexCur][columnIndexCur] = 0;
+		//отрисовываем новое положиние
 		DrawTable(dataGridView);
 		DrawStartPosition(dataGridView, pathEmpty, pathKnaz, pathZach, pathNApad, positionMass);
+		
+		//выводим чей ход теперь
 		if (isNapad) {
 			isNapad = false;
 			StepLable->Text = "защищающий";
@@ -518,12 +519,14 @@ private: System::Void dataGridView_CellClick(System::Object^ sender, System::Win
 	}
 
 }
+	   //подсвечиваем доступные ходы
 private: System::Void dataGridView_CellDoubleClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
 	//System::Windows::Forms::DataGridView^ Obereg::MainForm::
 	DrawTable(dataGridView);
-	 rowIndexCur = dataGridView->CurrentCell->RowIndex; // Получаем индекс строки
+	 rowIndexCur = dataGridView->CurrentCell->RowIndex; // Получаем индекс текущей  строки выбранной ячейки 
 	 columnIndexCur = dataGridView->CurrentCell->ColumnIndex;
 	 boolean checkStep = false;
+	 //проверям игрок выбрал своб фишку? 
 	 if (isNapad && positionMass[rowIndexCur][columnIndexCur] == 1) {
 		 checkStep = true;
 	 }
@@ -535,20 +538,22 @@ private: System::Void dataGridView_CellDoubleClick(System::Object^ sender, Syste
 	if (positionMass[rowIndexCur][columnIndexCur]==0) {
 	}
 	else if (checkStep) {
-		
+		//если выбрал свою
 		dataGridView->Rows[rowIndexCur]->Cells[columnIndexCur]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
-
+		//переменные определяющие направление закраса
 		boolean isZakrachV = true;
 		boolean isZakrachN = true;
 		boolean isZakrachP = true;
 		boolean isZakrachL = true;
 
 		int k = 9;
+		//если князь то перемежение доступно только на 3 ячейки
 		if (positionMass[rowIndexCur][columnIndexCur] == 3) {
 			k = 3;
 		}
 		for (int i = 1; i < k; i++)
 		{
+			//проверяем что доступные ячейки пусты и подсвечиваем их во всех направляених
 			if (rowIndexCur + i < 9) {
 				if (positionMass[rowIndexCur + i][columnIndexCur] == 0 && isZakrachV) {
 					dataGridView->Rows[rowIndexCur + i]->Cells[columnIndexCur]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
@@ -586,6 +591,7 @@ private: System::Void dataGridView_CellDoubleClick(System::Object^ sender, Syste
 				}
 			}
 		}
+		//прорисовываем выходы и трон князя 
 		if (positionMass[rowIndexCur][columnIndexCur] != 3) {
 			dataGridView->Rows[0]->Cells[8]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
 			dataGridView->Rows[0]->Cells[0]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
@@ -593,35 +599,7 @@ private: System::Void dataGridView_CellDoubleClick(System::Object^ sender, Syste
 			dataGridView->Rows[8]->Cells[0]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
 			dataGridView->Rows[4]->Cells[4]->Style->BackColor = System::Drawing::Color::Crimson;
 		}
-	/*	for (int i = 0; i<  9; i++)
-		{
-
-			if (positionMass[rowIndexCur][columnIndexCur] == 3 ) {
-				if (positionMass[rowIndexCur][i] == 0 && (columnIndexCur +2>= i &&  i >= columnIndexCur - 2 )) {
-					dataGridView->Rows[rowIndexCur]->Cells[i]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
-					
-				}
-				if (positionMass[i][columnIndexCur] == 0 && (rowIndexCur + 2 >= i && i >= rowIndexCur - 2 )) {
-					dataGridView->Rows[i]->Cells[columnIndexCur]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
-				}
-			}
-			else {
-				if (positionMass[rowIndexCur][i] == 0) {
-					dataGridView->Rows[rowIndexCur]->Cells[i]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
-				}
-				if (positionMass[i][columnIndexCur] == 0) {
-					dataGridView->Rows[i]->Cells[columnIndexCur]->Style->BackColor = System::Drawing::Color::PaleGoldenrod;
-				}
-				dataGridView->Rows[0]->Cells[8]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
-				dataGridView->Rows[0]->Cells[0]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
-				dataGridView->Rows[8]->Cells[8]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
-				dataGridView->Rows[8]->Cells[0]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
-				dataGridView->Rows[4]->Cells[4]->Style->BackColor = System::Drawing::Color::Crimson;
-			}*/
-			//либо
-			//dgv[i, rowIndex].Selected = true;
-		//}
-
+	
 	}
 }
 }

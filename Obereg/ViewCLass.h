@@ -17,7 +17,7 @@ namespace ViewClass {
 		return "C:\\Users\\admin\\Desktop\\ѕолитех\\јлгоритмы и структура данных\\ урсач\\Obereg\\x64\\Debug\\";
 	}*/
 	
-
+	//отрисовка пол€ 
 	void DrawTable(DataGridView^ dataGridView) {
 		
 		for (int i = 0; i < 9; i++) {
@@ -28,13 +28,17 @@ namespace ViewClass {
 			dataGridView->Rows[0]->Cells[0]->Style->BackColor = System::Drawing::Color::White;
 
 		}
+		//прорисовываем выходы и  трон кн€з€
 		dataGridView->Rows[0]->Cells[0]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
 		dataGridView->Rows[8]->Cells[0]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
 		dataGridView->Rows[8]->Cells[8]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
 		dataGridView->Rows[0]->Cells[8]->Style->BackColor = System::Drawing::Color::LightSeaGreen;
 		dataGridView->Rows[4]->Cells[4]->Style->BackColor = System::Drawing::Color::Crimson;
 	};
-
+	 //отрисовка полодени€ играков на поле 
+	//1-нападающий
+		//2-защитник
+		//3-кн€зь
 	void DrawStartPosition(DataGridView^ dataGridView, 
 		String^ pathEmpty, String^ pathKnaz, String^ pathZach, String^ pathNApad, 
 		int positionMass[9][9]) {
@@ -64,8 +68,8 @@ namespace ViewClass {
 					path = pathEmpty;
 				}
 				Bitmap^ bmp = gcnew Bitmap(path);
-				dataGridView->Rows[i]->Cells[j]->Value = bmp;
-				//dataGridView->Rows[i]->Cells[j]->Value = "";
+				dataGridView->Rows[i]->Cells[j]->Value = bmp; 
+				//каждой фишке присваиваем свою картинку 
 			}
 		}
 

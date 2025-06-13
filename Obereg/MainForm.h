@@ -27,6 +27,7 @@ namespace Obereg {
 								{0,0,0,0,1,0,0,0,0},
 								{0,0,0,1,1,1,0,0,0} };
 	int rowIndexCur=0, columnIndexCur=0;
+	int NapCount = 16;
 	//кто сейчас ходит
 	boolean  isNapad = false;
 	/// <summary>
@@ -45,6 +46,8 @@ namespace Obereg {
 	private: System::Windows::Forms::Label^ label6;
 	public:
 	private: System::Windows::Forms::Label^ StepLable;
+	private: System::Windows::Forms::Button^ WinButton;
+
 		   static String^ pathNApad;/// объявление строковой переменной*/
 			
 		
@@ -171,6 +174,7 @@ namespace Obereg {
 			this->Column8 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
 			this->Column9 = (gcnew System::Windows::Forms::DataGridViewImageColumn());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->WinButton = (gcnew System::Windows::Forms::Button());
 			this->KnazButton = (gcnew System::Windows::Forms::Button());
 			this->ZaсhButton = (gcnew System::Windows::Forms::Button());
 			this->NapadButton = (gcnew System::Windows::Forms::Button());
@@ -308,6 +312,7 @@ namespace Obereg {
 			// 
 			// groupBox1
 			// 
+			this->groupBox1->Controls->Add(this->WinButton);
 			this->groupBox1->Controls->Add(this->KnazButton);
 			this->groupBox1->Controls->Add(this->ZaсhButton);
 			this->groupBox1->Controls->Add(this->NapadButton);
@@ -326,6 +331,21 @@ namespace Obereg {
 			this->groupBox1->TabIndex = 1;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Условные обозначения";
+			// 
+			// WinButton
+			// 
+			this->WinButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(255)),
+				static_cast<System::Int32>(static_cast<System::Byte>(128)));
+			this->WinButton->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->WinButton->Font = (gcnew System::Drawing::Font(L"Gadugi", 18, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->WinButton->Location = System::Drawing::Point(0, 0);
+			this->WinButton->Name = L"WinButton";
+			this->WinButton->Size = System::Drawing::Size(151, 228);
+			this->WinButton->TabIndex = 10;
+			this->WinButton->Text = L"Победа!";
+			this->WinButton->UseVisualStyleBackColor = false;
+			this->WinButton->Visible = false;
 			// 
 			// KnazButton
 			// 
@@ -496,13 +516,24 @@ private: System::Void dataGridView_CellClick(System::Object^ sender, System::Win
 	//проверями что выбрана новая ячейка
 	if (rowIndexCurN == rowIndexCur && columnIndexCurN == columnIndexCur) {
 	}else if (dataGridView->Rows[rowIndexCurN]->Cells[columnIndexCurN]->Style->BackColor == System::Drawing::Color::PaleGoldenrod) {
-		int igr = positionMass[rowIndexCur][columnIndexCur]; // текущая позиция
-		positionMass[rowIndexCurN][columnIndexCurN] = igr;//новыя позиция куда идти 
+		int igr = positionMass[rowIndexCur][columnIndexCur]; // запоминаем фишку игрока 
+		positionMass[rowIndexCurN][columnIndexCurN] = igr;//передвигаем фишку на новое место 
 		positionMass[rowIndexCur][columnIndexCur] = 0;
+		
+		if (AreYouWin(igr, rowIndexCurN, columnIndexCurN,  positionMass, NapCount)) {
+			WinButton->Visible = true;
+			if (isNapad) {
+				WinButton->Text = "Победа за нападающими";
+
+			}
+			else {
+				WinButton->Text = "Победа за защитниками";
+
+			}
+		}
 		//отрисовываем новое положиние
 		DrawTable(dataGridView);
 		DrawStartPosition(dataGridView, pathEmpty, pathKnaz, pathZach, pathNApad, positionMass);
-		
 		//выводим чей ход теперь
 		if (isNapad) {
 			isNapad = false;
